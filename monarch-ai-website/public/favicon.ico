@@ -1,1 +1,26 @@
 <!-- Replace with actual favicon -->
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with rounded corners -->
+  <rect width="32" height="32" rx="6" fill="#000000"/>
+  
+  <!-- Bot icon design -->
+  <g transform="translate(8, 8)">
+    <!-- Bot head -->
+    <rect x="3" y="5" width="10" height="8" rx="2" fill="white"/>
+    
+    <!-- Bot eyes -->
+    <circle cx="6" cy="8" r="1" fill="#000000"/>
+    <circle cx="10" cy="8" r="1" fill="#000000"/>
+    
+    <!-- Bot antenna -->
+    <rect x="7.5" y="2" width="1" height="3" fill="white"/>
+    <circle cx="8" cy="1.5" r="1" fill="white"/>
+    
+    <!-- Bot body -->
+    <rect x="4" y="13" width="8" height="3" rx="1" fill="white"/>
+    
+    <!-- Bot arms -->
+    <rect x="1" y="9" width="2" height="4" rx="1" fill="white"/>
+    <rect x="13" y="9" width="2" height="4" rx="1" fill="white"/>
+  </g>
+</svg>
