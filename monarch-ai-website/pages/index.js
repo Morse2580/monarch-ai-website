@@ -97,7 +97,8 @@ export default function Home() {
     setFormState({ isSubmitting: true, isSubmitted: false, error: null });
 
     try {
-      const webhookUrl = 'https://mosesnjau.app.n8n.cloud/webhook-test/a43071e7-b16b-4df7-b93a-664f94223b73';
+      // TODO: Change to the actual webhook URL
+      const webhookUrl = 'https://mosesnjau.app.n8n.cloud/webhook/a43071e7-b16b-4df7-b93a-664f94223b73';
       
       const response = await fetch(webhookUrl, {
         method: 'POST',
