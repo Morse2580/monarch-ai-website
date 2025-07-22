@@ -16,8 +16,8 @@ export default function Home() {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
     company: '',
+    phone: '',
     message: ''
   });
 
@@ -97,7 +97,7 @@ export default function Home() {
     setFormState({ isSubmitting: true, isSubmitted: false, error: null });
 
     try {
-      const webhookUrl = 'https://mosesnjau.app.n8n.cloud/webhook/0e979dbf-9b3f-4f31-bcf0-04d26cb9f02d';
+      const webhookUrl = 'https://mosesnjau.app.n8n.cloud/webhook-test/a43071e7-b16b-4df7-b93a-664f94223b73';
       
       const response = await fetch(webhookUrl, {
         method: 'POST',
@@ -117,8 +117,8 @@ export default function Home() {
           firstName: '',
           lastName: '',
           email: '',
-          phone: '',
           company: '',
+          phone: '',
           message: ''
         });
       } else {
@@ -142,8 +142,8 @@ export default function Home() {
       className={`${size} ${position} absolute rounded-full opacity-10`}
       style={{
         background: 'radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.05) 50%, transparent 100%)',
-        transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`,
-        transition: 'transform 0.8s ease-out'
+        transform: isFormFocused ? 'translate(0px, 0px)' : `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`,
+        transition: isFormFocused ? 'none' : 'transform 0.8s ease-out'
       }}
     />
   );
@@ -153,7 +153,7 @@ export default function Home() {
       id={id}
       data-animate
       className={`transform transition-all duration-1000 ${
-        isVisible[id] ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-100'
+        isVisible[id] && !isFormFocused ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-100'
       } ${className}`}
     >
       {children}
@@ -396,6 +396,42 @@ export default function Home() {
             .pulse-success {
               animation: pulse 2s infinite;
             }
+            
+            /* FORM ISOLATION - COMPLETELY DISABLE ALL ANIMATIONS */
+            #contact {
+              transform: none !important;
+              transition: none !important;
+            }
+            
+            #contact * {
+              transform: none !important;
+              transition: none !important;
+            }
+            
+            #contact input,
+            #contact textarea,
+            #contact button {
+              transform: none !important;
+              transition: none !important;
+              animation: none !important;
+            }
+            
+            /* Prevent scroll jumping */
+            body.form-focused {
+              scroll-behavior: auto;
+            }
+            
+            /* GLOBAL ANIMATION FREEZE WHEN FORM IS FOCUSED */
+            body.form-focused * {
+              animation-play-state: paused !important;
+              transform: none !important;
+              transition: none !important;
+            }
+            
+            body.form-focused [data-animate] {
+              transform: none !important;
+              animation: none !important;
+            }
           `
         }} />
         
@@ -435,9 +471,6 @@ export default function Home() {
             `
           }}
         />
-        
-        {/* Typeform embed script */}
-        <script src="//embed.typeform.com/next/embed.js"></script>
       </Head>
 
       <div className="min-h-screen bg-white overflow-hidden relative">
@@ -1027,7 +1060,7 @@ export default function Home() {
         </AnimatedSection>
 
         {/* Contact Section - NO ANIMATIONS */}
-        <AnimatedSection id="contact" className="py-20 px-6">
+        <section id="contact" className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-5xl md:text-6xl font-black text-black mb-6">
@@ -1123,17 +1156,6 @@ export default function Home() {
                       autoComplete="email"
                     />
                     <input 
-                      type="tel" 
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="Phone Number" 
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:outline-none bg-white"
-                      style={{ transition: 'none', transform: 'none' }}
-                      disabled={formState.isSubmitting}
-                      autoComplete="tel"
-                    />
-                    <input 
                       type="text" 
                       name="company"
                       value={formData.company}
@@ -1143,6 +1165,17 @@ export default function Home() {
                       style={{ transition: 'none', transform: 'none' }}
                       disabled={formState.isSubmitting}
                       autoComplete="organization"
+                    />
+                    <input 
+                      type="tel" 
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      placeholder="Phone Number" 
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:outline-none bg-white"
+                      style={{ transition: 'none', transform: 'none' }}
+                      disabled={formState.isSubmitting}
+                      autoComplete="tel"
                     />
                     <textarea 
                       name="message"
@@ -1225,7 +1258,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </AnimatedSection>
+        </section>
 
         {/* Footer */}
         <footer className="bg-black text-white py-16 px-6">
