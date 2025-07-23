@@ -646,6 +646,7 @@ export default function Home() {
           </div>
         </section>
 
+
         {/* Services Section */}
         <AnimatedSection id="services" className="py-20 px-6 bg-gray-50">
           <div className="max-w-7xl mx-auto">
@@ -675,6 +676,364 @@ export default function Home() {
                         <span className="text-gray-700 font-medium">{benefit}</span>
                       </div>
                     ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Live Technology Stack Carousel Section */}
+        <AnimatedSection id="technology" className="py-20 px-6 relative overflow-hidden">
+          {/* Floating Background Elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="floating-bg absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-blue-100/30 to-purple-100/30 rounded-full blur-3xl"></div>
+            <div className="floating-bg absolute top-1/2 -right-10 w-60 h-60 bg-gradient-to-r from-green-100/30 to-blue-100/30 rounded-full blur-3xl" style={{ animationDelay: '2s' }}></div>
+            <div className="floating-bg absolute -bottom-10 left-1/3 w-32 h-32 bg-gradient-to-r from-purple-100/30 to-pink-100/30 rounded-full blur-3xl" style={{ animationDelay: '4s' }}></div>
+          </div>
+
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="text-center mb-16">
+              <h2 className="text-5xl md:text-6xl font-black text-black mb-6 bg-gradient-to-r from-gray-900 via-black to-gray-800 bg-clip-text text-transparent">
+                Powered by Industry Leaders
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                We leverage the most advanced tools and platforms to build your automation systems, ensuring reliability, scalability, and cutting-edge performance.
+              </p>
+            </div>
+
+            {/* Enhanced Live Carousel Container */}
+            <div className="carousel-container group relative overflow-hidden rounded-3xl p-8 border border-gray-200/50 shadow-xl">
+              <div className="flex animate-scroll">
+                {/* First set of tools */}
+                <div className="flex space-x-8 min-w-max">
+                  {/* Relume */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/relume.jpeg" alt="Relume" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Relume</span>
+                  </div>
+
+                  {/* Airtable */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/airtable.svg" alt="Airtable" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Airtable</span>
+                  </div>
+
+                  {/* N8N */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                         <img src="/images/N8n.svg" alt="N8N" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">N8N</span>
+                  </div>
+
+                  {/* Google Sheets */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/Google_Sheets_Logo.svg" alt="Google Sheets" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Google Sheets</span>
+                  </div>
+
+                  {/* OpenAI */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/openai.svg" alt="OpenAI" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">OpenAI</span>
+                  </div>
+
+                  {/* Gemini */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/gemini-color.svg" alt="Gemini" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Gemini</span>
+                  </div>
+
+                  {/* Make */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/make-color.svg" alt="Make" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Make</span>
+                  </div>
+
+                  {/* Webflow */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/webflow.svg" alt="Webflow" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Webflow</span>
+                  </div>
+
+                  {/* Base44 */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/base44.jpeg" alt="Base44" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Base44</span>
+                  </div>
+                </div>
+
+                {/* Duplicate set for infinite scroll */}
+                <div className="flex space-x-8 min-w-max">
+                  {/* Relume */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/relume.jpeg" alt="Relume" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Relume</span>
+                  </div>
+
+                  {/* Airtable */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/airtable.svg" alt="Airtable" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Airtable</span>
+                  </div>
+
+                  {/* N8N */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/N8n.svg" alt="N8N" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">N8N</span>
+                  </div>
+
+                  {/* Google Sheets */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/Google_Sheets_Logo.svg" alt="Google Sheets" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Google Sheets</span>
+                  </div>
+
+                  {/* OpenAI */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/openai.svg" alt="OpenAI" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">OpenAI</span>
+                  </div>
+
+                  {/* Gemini */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/gemini-color.svg" alt="Gemini" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Gemini</span>
+                  </div>
+
+                  {/* Make */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/make-color.svg" alt="Make" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Make</span>
+                  </div>
+
+                  {/* Webflow */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/webflow.svg" alt="Webflow" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Webflow</span>
+                  </div>
+
+                  {/* Base44 */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/base44.jpeg" alt="Base44" className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Base44</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Enhanced Gradient overlays with dynamic effects */}
+              <div className="absolute left-0 top-0 h-full w-20 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none z-10"></div>
+              <div className="absolute right-0 top-0 h-full w-20 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none z-10"></div>
+              
+              {/* Subtle glow effect on container */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 pointer-events-none"></div>
+              
+              {/* Interactive pause indicator */}
+              <div className="pause-indicator absolute top-4 right-4 opacity-0 transition-opacity duration-300 pointer-events-none">
+                <div className="bg-black/80 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center space-x-1">
+                  <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                  <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                  <span>Paused</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center mt-12">
+              <div className="inline-flex items-center space-x-2 text-gray-400 text-sm mb-4">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <span>Hover to pause • Authentic brand assets</span>
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+              </div>
+              <p className="text-gray-500 text-sm max-w-2xl mx-auto leading-relaxed">
+                And many more. We continuously evaluate and integrate the latest tools to ensure your automation systems are built with the best technology available.
+              </p>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Process Section */}
+        <AnimatedSection id="process" className="py-20 px-6 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-5xl md:text-6xl font-black text-black mb-6">
+                Our Proven Process
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                A transparent process, a fixed price, and a functional system delivered in 10 business days. Your success is the only measure of ours.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-4 gap-8">
+              {processes.map((process, index) => (
+                <div key={index} className="relative">
+                  <div className="bg-white border border-gray-200 rounded-3xl p-8 text-center hover:border-gray-300 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl">
+                    <div className="text-5xl mb-6">{process.icon}</div>
+                    <div className="text-sm font-bold text-gray-500 mb-2">{process.duration}</div>
+                    <h3 className="text-xl font-bold text-black mb-4">{process.title}</h3>
+                    <p className="text-gray-600 leading-relaxed">{process.description}</p>
+                  </div>
+                  {index < processes.length - 1 && (
+                    <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2">
+                      <ArrowRight className="w-6 h-6 text-gray-300" />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Why Choose Us Section */}
+        <AnimatedSection id="why-choose" className="py-20 px-6 bg-black text-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <div>
+                <h2 className="text-5xl md:text-6xl font-black mb-8 leading-tight">
+                  Why Choose Us for Your Automation Needs?
+                </h2>
+                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                  Our expertise in AI and automation sets us apart. We deliver tailored solutions that drive efficiency and growth.
+                </p>
+                
+                <div className="space-y-6">
+                  {[
+                    {
+                      title: "Tailored Approach",
+                      description: "We analyse your processes to create a system that truly fits your business."
+                    },
+                    {
+                      title: "Proven Results",
+                      description: "Our clients see measurable improvements in efficiency and productivity after implementation."
+                    },
+                    {
+                      title: "Client-Centric Approach",
+                      description: "We prioritise your needs and goals throughout every step of the process."
+                    },
+                    {
+                      title: "Ongoing Support",
+                      description: "Our commitment to your success doesn't end at launch."
+                    }
+                  ].map((item, index) => (
+                    <div key={index} className="flex space-x-4">
+                      <div className="w-2 h-2 bg-white rounded-full mt-3 flex-shrink-0"></div>
+                      <div>
+                        <h3 className="font-bold text-white mb-2">{item.title}</h3>
+                        <p className="text-gray-300">{item.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="relative">
+                <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-12 text-center">
+                  <div className="text-6xl font-black text-white mb-4">Trust</div>
+                  <div className="text-xl text-gray-300 mb-6">isn't claimed, it's earned.</div>
+                  <p className="text-gray-400 leading-relaxed">
+                    Our promise is simple: a transparent process, a fixed price, and a functional system delivered in 10 business days.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Testimonials Section */}
+        <AnimatedSection id="testimonials" className="py-20 px-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-5xl md:text-6xl font-black text-black mb-6">
+                Client Success Stories
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                See how we've transformed businesses with intelligent automation solutions.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-3 gap-8">
+              {testimonials.map((testimonial, index) => (
+                <div key={index} className="bg-white border border-gray-200 rounded-3xl p-8 hover:border-gray-300 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl">
+                  <div className="flex items-center space-x-1 mb-6">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 leading-relaxed mb-6 italic">"{testimonial.content}"</p>
+                  <div className="border-t border-gray-100 pt-6">
+                    <div className="font-bold text-black">{testimonial.name}</div>
+                    <div className="text-gray-600">{testimonial.role}</div>
+                    <div className="text-gray-500 text-sm">{testimonial.company}</div>
                   </div>
                 </div>
               ))}
