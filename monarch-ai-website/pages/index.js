@@ -225,7 +225,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="keywords" content="AI automation, business automation, workflow optimization, process automation, Belgium, Brussels" />
         <meta name="author" content="Moses Njau" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" />
         <meta property="og:title" content="Monarch AI - Intelligent Systems for Growth" />
         <meta property="og:description" content="Transform your business with tailored AI and process automation solutions." />
         <meta property="og:type" content="website" />
