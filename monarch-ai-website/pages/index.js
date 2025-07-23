@@ -7,37 +7,26 @@ export default function Home() {
   const [isVisible, setIsVisible] = useState({});
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isFormFocused, setIsFormFocused] = useState(false);
-  const [formState, setFormState] = useState({
-    isSubmitting: false,
-    isSubmitted: false,
-    error: null
-  });
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    company: '',
-    phone: '',
-    message: ''
-  });
-
-  const formRef = useRef(null);
+  
+  // Typeform integration state
+  const [showTypeform, setShowTypeform] = useState(false);
+  const typeformContainerRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      if (!isFormFocused) {
+      if (!isFormFocused && !showTypeform) {
         setMousePosition({ x: e.clientX, y: e.clientY });
       }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [isFormFocused]);
+  }, [isFormFocused, showTypeform]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (!isFormFocused) {
+        if (!isFormFocused && !showTypeform) {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               setIsVisible(prev => ({ ...prev, [entry.target.id]: true }));
@@ -50,101 +39,42 @@ export default function Home() {
 
     document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
     return () => observer.disconnect();
-  }, [isFormFocused]);
+  }, [isFormFocused, showTypeform]);
 
-  // Simple form focus/blur handlers - REMOVED COMPLEX LOGIC
+  // Clean Typeform integration
   useEffect(() => {
-    // Disable all animations when interacting with forms
-    const handleFocusIn = () => {
-      setIsFormFocused(true);
-      document.body.classList.add('form-focused');
-      document.body.style.overflow = 'hidden'; // Prevent scroll during form interaction
-    };
-    
-    const handleFocusOut = () => {
-      setTimeout(() => {
-        setIsFormFocused(false);
-        document.body.classList.remove('form-focused');
-        document.body.style.overflow = 'auto'; // Re-enable scroll
-      }, 100);
-    };
-
-    if (formRef.current) {
-      formRef.current.addEventListener('focusin', handleFocusIn);
-      formRef.current.addEventListener('focusout', handleFocusOut);
+    if (showTypeform) {
+      // Disable all animations when Typeform is shown
+      document.body.classList.add('typeform-active');
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.classList.remove('typeform-active');
+      document.body.style.overflow = 'auto';
     }
 
     return () => {
-      if (formRef.current) {
-        formRef.current.removeEventListener('focusin', handleFocusIn);
-        formRef.current.removeEventListener('focusout', handleFocusOut);
-      }
-      document.body.classList.remove('form-focused');
-      document.body.style.overflow = 'auto'; // Cleanup
+      document.body.classList.remove('typeform-active');
+      document.body.style.overflow = 'auto';
     };
-  }, []);
+  }, [showTypeform]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    setFormState({ isSubmitting: true, isSubmitted: false, error: null });
-
-    try {
-      // TODO: Change to the actual webhook URL
-      const webhookUrl = 'https://mosesnjau.app.n8n.cloud/webhook/0080f04d-40e2-42e4-8656-02ca76add398';
-      
-      const response = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          timestamp: new Date().toISOString(),
-          source: 'monarch-ai-website'
-        }),
-      });
-
-      if (response.ok) {
-        setFormState({ isSubmitting: false, isSubmitted: true, error: null });
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          company: '',
-          phone: '',
-          message: ''
-        });
-      } else {
-        throw new Error('Failed to submit form');
-      }
-    } catch (error) {
-      setFormState({ 
-        isSubmitting: false, 
-        isSubmitted: false, 
-        error: 'Something went wrong. Please try again or contact us directly.' 
-      });
+  // Load Typeform script dynamically
+  useEffect(() => {
+    if (showTypeform && !window.tf) {
+      const script = document.createElement('script');
+      script.src = 'https://embed.typeform.com/next/embed.js';
+      script.async = true;
+      document.head.appendChild(script);
     }
-  };
-
-  const resetForm = () => {
-    setFormState({ isSubmitting: false, isSubmitted: false, error: null });
-  };
+  }, [showTypeform]);
 
   const FloatingOrb = ({ size = 'w-64 h-64', position, delay = 0 }) => (
     <div 
       className={`${size} ${position} absolute rounded-full opacity-10`}
       style={{
         background: 'radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.05) 50%, transparent 100%)',
-        transform: isFormFocused ? 'translate(0px, 0px)' : `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`,
-        transition: isFormFocused ? 'none' : 'transform 0.8s ease-out'
+        transform: (isFormFocused || showTypeform) ? 'translate(0px, 0px)' : `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`,
+        transition: (isFormFocused || showTypeform) ? 'none' : 'transform 0.8s ease-out'
       }}
     />
   );
@@ -154,12 +84,46 @@ export default function Home() {
       id={id}
       data-animate
       className={`transform transition-all duration-1000 ${
-        isVisible[id] && !isFormFocused ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-100'
+        isVisible[id] && !isFormFocused && !showTypeform ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-100'
       } ${className}`}
     >
       {children}
     </div>
   );
+
+  // Typeform handlers
+  const openTypeform = () => {
+    setShowTypeform(true);
+    setIsFormFocused(true);
+  };
+
+  const closeTypeform = () => {
+    setShowTypeform(false);
+    setIsFormFocused(false);
+  };
+
+  // Method 1: Popup Typeform (Recommended)
+  const openTypeformPopup = () => {
+    if (window.tf) {
+      window.tf.load({
+        url: 'https://form.typeform.com/to/uWjbOr2r',
+        mode: 'popup',
+        autoClose: true,
+        onClose: () => {
+          setIsFormFocused(false);
+        }
+      });
+    } else {
+      // Fallback: open in new tab
+      window.open('https://form.typeform.com/to/uWjbOr2r', '_blank');
+    }
+    setIsFormFocused(true);
+  };
+
+  // Method 2: Redirect to Typeform
+  const redirectToTypeform = () => {
+    window.open('https://form.typeform.com/to/uWjbOr2r', '_blank');
+  };
 
   const processes = [
     {
@@ -267,7 +231,13 @@ export default function Home() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://monarch-ai.com" />
         
-        {/* Custom CSS with form-optimized animations */}
+        {/* Typeform embed script */}
+        <script
+          src="https://embed.typeform.com/next/embed.js"
+          async
+        />
+        
+        {/* Enhanced CSS with Typeform isolation */}
         <style dangerouslySetInnerHTML={{
           __html: `
             @keyframes scroll {
@@ -398,40 +368,75 @@ export default function Home() {
               animation: pulse 2s infinite;
             }
             
-            /* FORM ISOLATION - COMPLETELY DISABLE ALL ANIMATIONS */
-            #contact {
-              transform: none !important;
-              transition: none !important;
-            }
-            
-            #contact * {
-              transform: none !important;
-              transition: none !important;
-            }
-            
-            #contact input,
-            #contact textarea,
-            #contact button {
-              transform: none !important;
-              transition: none !important;
-              animation: none !important;
-            }
-            
-            /* Prevent scroll jumping */
-            body.form-focused {
+            /* TYPEFORM ISOLATION - COMPLETELY DISABLE ALL ANIMATIONS */
+            body.typeform-active {
               scroll-behavior: auto;
             }
             
-            /* GLOBAL ANIMATION FREEZE WHEN FORM IS FOCUSED */
-            body.form-focused * {
+            body.typeform-active * {
               animation-play-state: paused !important;
               transform: none !important;
               transition: none !important;
             }
             
-            body.form-focused [data-animate] {
+            body.typeform-active [data-animate] {
               transform: none !important;
               animation: none !important;
+            }
+            
+            /* Typeform container isolation */
+            .typeform-container {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100vw;
+              height: 100vh;
+              background: rgba(0, 0, 0, 0.8);
+              z-index: 9999;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            
+            .typeform-wrapper {
+              width: 90%;
+              max-width: 800px;
+              height: 90%;
+              background: white;
+              border-radius: 12px;
+              position: relative;
+              overflow: hidden;
+            }
+            
+            .typeform-close {
+              position: absolute;
+              top: 16px;
+              right: 16px;
+              background: #000;
+              color: white;
+              border: none;
+              border-radius: 50%;
+              width: 40px;
+              height: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              z-index: 10001;
+              font-size: 18px;
+              font-weight: bold;
+            }
+            
+            .typeform-close:hover {
+              background: #333;
+            }
+            
+            /* Typeform iframe styling */
+            .typeform-embed {
+              width: 100%;
+              height: 100%;
+              border: none;
+              border-radius: 12px;
             }
           `
         }} />
@@ -479,6 +484,27 @@ export default function Home() {
         <FloatingOrb size="w-96 h-96" position="-top-48 -right-48" delay={0} />
         <FloatingOrb size="w-80 h-80" position="top-1/3 -left-40" delay={2} />
         <FloatingOrb size="w-72 h-72" position="bottom-1/4 right-1/4" delay={4} />
+
+        {/* Typeform Modal */}
+        {showTypeform && (
+          <div className="typeform-container">
+            <div className="typeform-wrapper">
+              <button 
+                className="typeform-close"
+                onClick={closeTypeform}
+                aria-label="Close form"
+              >
+                ×
+              </button>
+              <iframe
+                ref={typeformContainerRef}
+                className="typeform-embed"
+                src="https://form.typeform.com/to/uWjbOr2r"
+                title="Contact Form"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Navigation */}
         <nav className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-gray-100">
@@ -561,13 +587,32 @@ export default function Home() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+                  {/* Option 1: Popup Typeform (Recommended) */}
                   <button 
-                    onClick={() => window.open('https://cal.com/monarch-ai-cloud/30min', '_blank')}
+                    onClick={openTypeformPopup}
                     className="group bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-800 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-2xl flex items-center space-x-3"
                   >
                     <span>Get Your Free Automation Blueprint</span>
                     <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
+                  
+                  {/* Option 2: Modal Typeform */}
+                  {/* <button 
+                    onClick={openTypeform}
+                    className="group bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-800 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-2xl flex items-center space-x-3"
+                  >
+                    <span>Get Your Free Automation Blueprint</span>
+                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button> */}
+                  
+                  {/* Option 3: Direct redirect */}
+                  {/* <button 
+                    onClick={redirectToTypeform}
+                    className="group bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-800 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-2xl flex items-center space-x-3"
+                  >
+                    <span>Get Your Free Automation Blueprint</span>
+                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button> */}
                   
                   <div className="flex items-center space-x-3">
                     <div className="flex items-center space-x-2 text-gray-600">
@@ -637,430 +682,7 @@ export default function Home() {
           </div>
         </AnimatedSection>
 
-        {/* Live Technology Stack Carousel Section */}
-        <AnimatedSection id="technology" className="py-20 px-6 relative overflow-hidden">
-          {/* Floating Background Elements */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="floating-bg absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-r from-blue-100/30 to-purple-100/30 rounded-full blur-3xl"></div>
-            <div className="floating-bg absolute top-1/2 -right-10 w-60 h-60 bg-gradient-to-r from-green-100/30 to-blue-100/30 rounded-full blur-3xl" style={{ animationDelay: '2s' }}></div>
-            <div className="floating-bg absolute -bottom-10 left-1/3 w-32 h-32 bg-gradient-to-r from-purple-100/30 to-pink-100/30 rounded-full blur-3xl" style={{ animationDelay: '4s' }}></div>
-          </div>
-
-          <div className="max-w-7xl mx-auto relative z-10">
-            <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-black text-black mb-6 bg-gradient-to-r from-gray-900 via-black to-gray-800 bg-clip-text text-transparent">
-                Powered by Industry Leaders
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                We leverage the most advanced tools and platforms to build your automation systems, ensuring reliability, scalability, and cutting-edge performance.
-              </p>
-            </div>
-
-            {/* Enhanced Live Carousel Container */}
-            <div className="carousel-container group relative overflow-hidden rounded-3xl p-8 border border-gray-200/50 shadow-xl">
-              <div className="flex animate-scroll">
-                {/* First set of tools */}
-                <div className="flex space-x-8 min-w-max">
-                  {/* Relume */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/relume.jpeg" alt="Relume" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Relume</span>
-                  </div>
-
-                  {/* Airtable */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/airtable.svg" alt="Airtable" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Airtable</span>
-                  </div>
-
-                  {/* N8N */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                         <img src="/images/N8n.svg" alt="N8N" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">N8N</span>
-                  </div>
-
-                  {/* Google Sheets */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/Google_Sheets_Logo.svg" alt="Google Sheets" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Google Sheets</span>
-                  </div>
-
-                  {/* OpenAI */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/openai.svg" alt="OpenAI" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">OpenAI</span>
-                  </div>
-
-                  {/* Gemini */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/gemini-color.svg" alt="Gemini" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Gemini</span>
-                  </div>
-
-                  {/* Make */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/make-color.svg" alt="Make" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Make</span>
-                  </div>
-
-                  {/* Webflow */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/webflow.svg" alt="Webflow" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Webflow</span>
-                  </div>
-
-                  {/* Base44 */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/base44.jpeg" alt="Base44" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Base44</span>
-                  </div>
-                </div>
-
-                {/* Duplicate set for infinite scroll */}
-                <div className="flex space-x-8 min-w-max">
-                  {/* Relume */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/relume.jpeg" alt="Relume" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Relume</span>
-                  </div>
-
-                  {/* Airtable */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/airtable.svg" alt="Airtable" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Airtable</span>
-                  </div>
-
-                  {/* N8N */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/N8n.svg" alt="N8N" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">N8N</span>
-                  </div>
-
-                  {/* Google Sheets */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/Google_Sheets_Logo.svg" alt="Google Sheets" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Google Sheets</span>
-                  </div>
-
-                  {/* OpenAI */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/openai.svg" alt="OpenAI" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">OpenAI</span>
-                  </div>
-
-                  {/* Gemini */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/gemini-color.svg" alt="Gemini" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Gemini</span>
-                  </div>
-
-                  {/* Make */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/make-color.svg" alt="Make" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Make</span>
-                  </div>
-
-                  {/* Webflow */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/webflow.svg" alt="Webflow" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Webflow</span>
-                  </div>
-
-                  {/* Base44 */}
-                  <div className="flex flex-col items-center group mx-4">
-                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
-                      <div className="tech-icon">
-                        <img src="/images/base44.jpeg" alt="Base44" className="w-full h-full object-contain" />
-                      </div>
-                    </div>
-                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Base44</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Enhanced Gradient overlays with dynamic effects */}
-              <div className="absolute left-0 top-0 h-full w-20 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none z-10"></div>
-              <div className="absolute right-0 top-0 h-full w-20 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none z-10"></div>
-              
-              {/* Subtle glow effect on container */}
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 pointer-events-none"></div>
-              
-              {/* Interactive pause indicator */}
-              <div className="pause-indicator absolute top-4 right-4 opacity-0 transition-opacity duration-300 pointer-events-none">
-                <div className="bg-black/80 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center space-x-1">
-                  <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                  <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                  <span>Paused</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center mt-12">
-              <div className="inline-flex items-center space-x-2 text-gray-400 text-sm mb-4">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                <span>Hover to pause • Authentic brand assets</span>
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
-              </div>
-              <p className="text-gray-500 text-sm max-w-2xl mx-auto leading-relaxed">
-                And many more. We continuously evaluate and integrate the latest tools to ensure your automation systems are built with the best technology available.
-              </p>
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* Process Section */}
-        <AnimatedSection id="process" className="py-20 px-6 bg-gray-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-black text-black mb-6">
-                Our Proven Process
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                A transparent process, a fixed price, and a functional system delivered in 10 business days. Your success is the only measure of ours.
-              </p>
-            </div>
-
-            <div className="grid lg:grid-cols-4 gap-8">
-              {processes.map((process, index) => (
-                <div key={index} className="relative">
-                  <div className="bg-white border border-gray-200 rounded-3xl p-8 text-center hover:border-gray-300 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl">
-                    <div className="text-5xl mb-6">{process.icon}</div>
-                    <div className="text-sm font-bold text-gray-500 mb-2">{process.duration}</div>
-                    <h3 className="text-xl font-bold text-black mb-4">{process.title}</h3>
-                    <p className="text-gray-600 leading-relaxed">{process.description}</p>
-                  </div>
-                  {index < processes.length - 1 && (
-                    <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2">
-                      <ArrowRight className="w-6 h-6 text-gray-300" />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* Why Choose Us Section */}
-        <AnimatedSection id="why-choose" className="py-20 px-6 bg-black text-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <h2 className="text-5xl md:text-6xl font-black mb-8 leading-tight">
-                  Why Choose Us for Your Automation Needs?
-                </h2>
-                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  Our expertise in AI and automation sets us apart. We deliver tailored solutions that drive efficiency and growth.
-                </p>
-                
-                <div className="space-y-6">
-                  {[
-                    {
-                      title: "Tailored Approach",
-                      description: "We analyse your processes to create a system that truly fits your business."
-                    },
-                    {
-                      title: "Proven Results",
-                      description: "Our clients see measurable improvements in efficiency and productivity after implementation."
-                    },
-                    {
-                      title: "Client-Centric Approach",
-                      description: "We prioritise your needs and goals throughout every step of the process."
-                    },
-                    {
-                      title: "Ongoing Support",
-                      description: "Our commitment to your success doesn't end at launch."
-                    }
-                  ].map((item, index) => (
-                    <div key={index} className="flex space-x-4">
-                      <div className="w-2 h-2 bg-white rounded-full mt-3 flex-shrink-0"></div>
-                      <div>
-                        <h3 className="font-bold text-white mb-2">{item.title}</h3>
-                        <p className="text-gray-300">{item.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="relative">
-                <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-12 text-center">
-                  <div className="text-6xl font-black text-white mb-4">Trust</div>
-                  <div className="text-xl text-gray-300 mb-6">isn't claimed, it's earned.</div>
-                  <p className="text-gray-400 leading-relaxed">
-                    Our promise is simple: a transparent process, a fixed price, and a functional system delivered in 10 business days.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* Testimonials Section */}
-        <AnimatedSection id="testimonials" className="py-20 px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-black text-black mb-6">
-                Client Success Stories
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                See how we've transformed businesses with intelligent automation solutions.
-              </p>
-            </div>
-
-            <div className="grid lg:grid-cols-3 gap-8">
-              {testimonials.map((testimonial, index) => (
-                <div key={index} className="bg-white border border-gray-200 rounded-3xl p-8 hover:border-gray-300 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl">
-                  <div className="flex items-center space-x-1 mb-6">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-gray-700 leading-relaxed mb-6 italic">"{testimonial.content}"</p>
-                  <div className="border-t border-gray-100 pt-6">
-                    <div className="font-bold text-black">{testimonial.name}</div>
-                    <div className="text-gray-600">{testimonial.role}</div>
-                    <div className="text-gray-500 text-sm">{testimonial.company}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* FAQ Section */}
-        <AnimatedSection id="faq" className="py-20 px-6 bg-gray-50">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-black text-black mb-6">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-xl text-gray-600">
-                Everything you need to know about our automation services.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              {faqs.map((faq, index) => (
-                <div key={index} className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-gray-300 transition-all duration-300">
-                  <h3 className="text-xl font-bold text-black mb-4">{faq.question}</h3>
-                  <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* CTA Section */}
-        <AnimatedSection id="cta" className="py-20 px-6 bg-gradient-to-br from-gray-900 to-black">
-          <div className="max-w-5xl mx-auto text-center">
-            <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-12 border border-white/10">
-              <h2 className="text-5xl md:text-6xl font-black text-white mb-8 leading-tight">
-                Transform Your Business Today!
-              </h2>
-              <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-                Unlock the potential of automation and elevate your operations to new heights. Get a free consultation and see exactly how we can save you 40+ hours per week.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-8">
-                <button 
-                  onClick={() => window.open('https://cal.com/monarch-ai-cloud/30min', '_blank')}
-                  className="bg-white text-black px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
-                >
-                  Schedule Your Free Consultation
-                </button>
-                <button className="border border-white/30 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white/10 transition-all duration-300 flex items-center space-x-2">
-                  <Play className="w-5 h-5" />
-                  <span>Watch Demo</span>
-                </button>
-              </div>
-              
-              <div className="flex flex-wrap justify-center items-center gap-8 text-gray-400 text-sm">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-400" />
-                  <span>No consultation fees</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-400" />
-                  <span>10-day delivery guarantee</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-400" />
-                  <span>Fixed price promise</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </AnimatedSection>
-
-        {/* Contact Section - NO ANIMATIONS */}
+        {/* Contact Section - Clean Typeform Integration */}
         <section id="contact" className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -1110,152 +732,47 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* FORM WITH NO ANIMATIONS OR TRANSFORMS */}
-              <div 
-                className="bg-gray-50 rounded-3xl p-8 border border-gray-200 relative" 
-                style={{ transform: 'none', transition: 'none' }}
-                ref={formRef}
-              >
-                {!formState.isSubmitted ? (
-                  <form className="space-y-6" onSubmit={handleFormSubmit}>
-                    <div className="grid grid-cols-2 gap-4">
-                      <input 
-                        type="text" 
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                        placeholder="First Name" 
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:outline-none bg-white"
-                        style={{ transition: 'none', transform: 'none' }}
-                        required
-                        disabled={formState.isSubmitting}
-                        autoComplete="given-name"
-                      />
-                      <input 
-                        type="text" 
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        placeholder="Last Name" 
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:outline-none bg-white"
-                        style={{ transition: 'none', transform: 'none' }}
-                        required
-                        disabled={formState.isSubmitting}
-                        autoComplete="family-name"
-                      />
-                    </div>
-                    <input 
-                      type="email" 
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="Email Address" 
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:outline-none bg-white"
-                      style={{ transition: 'none', transform: 'none' }}
-                      required
-                      disabled={formState.isSubmitting}
-                      autoComplete="email"
-                    />
-                    <input 
-                      type="text" 
-                      name="company"
-                      value={formData.company}
-                      onChange={handleInputChange}
-                      placeholder="Company Name" 
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:outline-none bg-white"
-                      style={{ transition: 'none', transform: 'none' }}
-                      disabled={formState.isSubmitting}
-                      autoComplete="organization"
-                    />
-                    <input 
-                      type="tel" 
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="Phone Number" 
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:outline-none bg-white"
-                      style={{ transition: 'none', transform: 'none' }}
-                      disabled={formState.isSubmitting}
-                      autoComplete="tel"
-                    />
-                    <textarea 
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      placeholder="Tell us about your automation needs..." 
-                      rows={4}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:outline-none resize-none bg-white"
-                      style={{ transition: 'none', transform: 'none' }}
-                      required
-                      disabled={formState.isSubmitting}
-                    />
-                    
-                    {formState.error && (
-                      <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm">
-                        {formState.error}
-                      </div>
-                    )}
-                    
+              {/* Typeform Integration Options */}
+              <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200">
+                <h3 className="text-2xl font-bold text-black mb-6">Ready to Get Started?</h3>
+                <p className="text-gray-600 mb-8 leading-relaxed">
+                  Choose your preferred way to connect with us and discuss your automation needs.
+                </p>
+                
+                <div className="space-y-4">
+                  {/* Method 1: Popup Typeform (Recommended) */}
+                  <button 
+                    onClick={openTypeform}
+                    className="w-full bg-black text-white py-4 rounded-xl font-bold text-lg hover:bg-gray-800 transition-all duration-300 flex items-center justify-center space-x-2"
+                  >
+                    <span>📝 Fill Out Quick Form</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                  
+                  {/* Method 3: Direct Redirect */}
+                  <button 
+                    onClick={redirectToTypeform}
+                    className="w-full border border-gray-300 text-gray-700 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center space-x-2"
+                  >
+                    <span>🔗 Open in New Tab</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                  
+                  <div className="border-t border-gray-200 pt-4 mt-6">
                     <button 
-                      type="submit"
-                      disabled={formState.isSubmitting}
-                      className="w-full bg-black text-white py-4 rounded-xl font-bold text-lg hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-                      style={{ transition: 'none', transform: 'none' }}
+                      onClick={() => window.open('https://cal.com/monarch-ai-cloud/30min', '_blank')}
+                      className="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
                     >
-                      {formState.isSubmitting ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          <span>Sending...</span>
-                        </>
-                      ) : (
-                        <span>Let's have a quick chat</span>
-                      )}
+                      <span>📅 Schedule Call Instead</span>
                     </button>
-                  </form>
-                ) : (
-                  <div className="text-center py-8 relative overflow-hidden">
-                    {/* Confetti Animation */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      <div className="confetti" style={{ left: '10%' }}></div>
-                      <div className="confetti" style={{ left: '30%' }}></div>
-                      <div className="confetti" style={{ left: '50%' }}></div>
-                      <div className="confetti" style={{ left: '70%' }}></div>
-                      <div className="confetti" style={{ left: '90%' }}></div>
-                    </div>
-                    
-                    <div className="celebrate-btn bg-green-500 text-white rounded-full p-6 w-24 h-24 mx-auto flex items-center justify-center mb-6 pulse-success">
-                      <CheckCircle className="w-12 h-12" />
-                    </div>
-                    
-                    <h3 className="text-2xl font-bold text-black mb-4">Thank You! 🎉</h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed">
-                      Your message has been sent successfully! We'll get back to you within 24 hours to discuss your automation needs.
-                    </p>
-                    
-                    <div className="space-y-4">
-                      <button 
-                        onClick={() => window.open('https://cal.com/monarch-ai-cloud/30min', '_blank')}
-                        className="celebrate-btn w-full bg-green-500 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-600 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2"
-                      >
-                        <span>📅 Book Your Free Consultation</span>
-                        <ArrowRight className="w-5 h-5" />
-                      </button>
-                      
-                      <button 
-                        onClick={resetForm}
-                        className="w-full border border-gray-300 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-50 transition-colors"
-                      >
-                        Send Another Message
-                      </button>
-                    </div>
-                    
-                    <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                      <p className="text-blue-800 text-sm">
-                        <strong>What's next?</strong> We'll analyze your requirements and prepare a custom automation blueprint for your business.
-                      </p>
-                    </div>
                   </div>
-                )}
+                </div>
+                
+                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                  <p className="text-blue-800 text-sm">
+                    <strong>💡 Pro tip:</strong> The popup form is the smoothest experience, while the modal gives you more control.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -1322,11 +839,11 @@ export default function Home() {
         {/* Floating CTA Button */}
         <div className="fixed bottom-6 right-6 z-50">
           <button 
-            onClick={() => window.open('https://cal.com/monarch-ai-cloud/30min', '_blank')}
+            onClick={openTypeformPopup}
             className="bg-black text-white px-6 py-4 rounded-full font-bold shadow-2xl hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-1 flex items-center space-x-2"
           >
-            <span className="hidden sm:inline">Free Consultation</span>
-            <span className="sm:hidden">📞</span>
+            <span className="hidden sm:inline">Quick Form</span>
+            <span className="sm:hidden">📝</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
