@@ -172,24 +172,24 @@ export default function Home() {
 
   const testimonials = [
     {
-      name: "Sarah van der Berg",
-      role: "Operations Director", 
-      company: "FlowTech Solutions",
-      content: "Monarch AI transformed our entire workflow. We're saving 35 hours per week and our team can finally focus on strategic work instead of administrative tasks. The 10-day delivery was exactly as promised.",
+      name: "Clotilde Boureau",
+      role: "Project Manager", 
+      company: "Unilever",
+      content: "Moses is really accommodating and can get things done quickly; I would recommend him to anyone looking for a reliable and efficient partner.",
       rating: 5
     },
     {
-      name: "Marcus Chen",
-      role: "CEO",
-      company: "AutoScale BV", 
-      content: "The automation systems they built are incredible. Everything just works seamlessly, and our productivity has increased by 300%. Best investment we've made for our business growth.",
+      name: "Patrick Borde",
+      role: "Transformation Director",
+      company: "Unilever", 
+      content: "The tools that Moses built are efficient and easy to use. I think the greatest challenge was the language barrier, but he was able to overcome it and deliver a great products.",
       rating: 5
     },
     {
-      name: "Elena Rodriguez",
-      role: "Founder",
-      company: "StreamlineOps",
-      content: "Professional, efficient, and results-driven. Moses delivered exactly what was promised – a functional system that revolutionized our operations. No consultation fees was a great touch.",
+      name: "Guilhem Jalade ",
+      role: "Project Manager Data & AI",
+      company: "Unilever",
+      content: "Its amazing how he was able to deliver and manage multiple systems at the same time. He is a great problem solver and has a lot of experience in the field.",
       rating: 5
     }
   ];
