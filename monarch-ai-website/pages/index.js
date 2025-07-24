@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
-import { ChevronRight, ArrowRight, Zap, Bot, Target, Sparkles, CheckCircle, Play, Users, Clock, Star, ArrowDown, Menu, X, Phone, Mail, MapPin } from 'lucide-react';
+import { ChevronRight, ArrowRight, Zap, Bot, Target, Sparkles, CheckCircle, Play, Users, Clock, Star, ArrowDown, Menu, X, Phone, Mail, MapPin, BarChart3, MessageSquare, Settings } from 'lucide-react';
 
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -11,22 +11,25 @@ export default function Home() {
   // Typeform integration state
   const [showTypeform, setShowTypeform] = useState(false);
   const typeformContainerRef = useRef(null);
+  
+  // Typebot integration state
+  const [showTypebot, setShowTypebot] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      if (!isFormFocused && !showTypeform) {
+      if (!isFormFocused && !showTypeform && !showTypebot) {
         setMousePosition({ x: e.clientX, y: e.clientY });
       }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [isFormFocused, showTypeform]);
+  }, [isFormFocused, showTypeform, showTypebot]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (!isFormFocused && !showTypeform) {
+        if (!isFormFocused && !showTypeform && !showTypebot) {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               setIsVisible(prev => ({ ...prev, [entry.target.id]: true }));
@@ -39,12 +42,12 @@ export default function Home() {
 
     document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
     return () => observer.disconnect();
-  }, [isFormFocused, showTypeform]);
+  }, [isFormFocused, showTypeform, showTypebot]);
 
-  // Clean Typeform integration
+  // Clean Typeform/Typebot integration
   useEffect(() => {
-    if (showTypeform) {
-      // Disable all animations when Typeform is shown
+    if (showTypeform || showTypebot) {
+      // Disable all animations when forms are shown
       document.body.classList.add('typeform-active');
       document.body.style.overflow = 'hidden';
     } else {
@@ -56,7 +59,7 @@ export default function Home() {
       document.body.classList.remove('typeform-active');
       document.body.style.overflow = 'auto';
     };
-  }, [showTypeform]);
+  }, [showTypeform, showTypebot]);
 
   // Load Typeform script dynamically
   useEffect(() => {
@@ -73,8 +76,8 @@ export default function Home() {
       className={`${size} ${position} absolute rounded-full opacity-10`}
       style={{
         background: 'radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.05) 50%, transparent 100%)',
-        transform: (isFormFocused || showTypeform) ? 'translate(0px, 0px)' : `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`,
-        transition: (isFormFocused || showTypeform) ? 'none' : 'transform 0.8s ease-out'
+        transform: (isFormFocused || showTypeform || showTypebot) ? 'translate(0px, 0px)' : `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`,
+        transition: (isFormFocused || showTypeform || showTypebot) ? 'none' : 'transform 0.8s ease-out'
       }}
     />
   );
@@ -84,7 +87,7 @@ export default function Home() {
       id={id}
       data-animate
       className={`transform transition-all duration-1000 ${
-        isVisible[id] && !isFormFocused && !showTypeform ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-100'
+        isVisible[id] && !isFormFocused && !showTypeform && !showTypebot ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-100'
       } ${className}`}
     >
       {children}
@@ -123,6 +126,17 @@ export default function Home() {
   // Method 2: Redirect to Typeform
   const redirectToTypeform = () => {
     window.open('https://form.typeform.com/to/uWjbOr2r', '_blank');
+  };
+
+  // Typebot handler
+  const openTypebot = () => {
+    setShowTypebot(true);
+    setIsFormFocused(true);
+  };
+
+  const closeTypebot = () => {
+    setShowTypebot(false);
+    setIsFormFocused(false);
   };
 
   const processes = [
@@ -214,6 +228,36 @@ export default function Home() {
     {
       question: "How much technical knowledge do I need?",
       answer: "None. Our automation systems are designed to run independently. We provide full training and our systems are built to be user-friendly while handling complex processes behind the scenes."
+    }
+  ];
+
+  const solutions = [
+    {
+      title: "For Marketing Agencies",
+      systemName: "The Digital Footprint Engine", 
+      description: "An automated system for marketing agencies to instantly audit new leads and generate strategic reports. We turn your sales process into a high-speed, scalable machine.",
+      icon: BarChart3,
+      gradient: "from-blue-500 to-purple-600",
+      bgColor: "bg-blue-50",
+      borderColor: "border-blue-200"
+    },
+    {
+      title: "For Real Estate & Loan Brokers",
+      systemName: "The Intelligent Lead Assistant",
+      description: "A bespoke AI assistant for brokers that captures and qualifies every new lead from your website or email 24/7, sending personalized replies and booking appointments automatically. Never miss a deal again.",
+      icon: MessageSquare,
+      gradient: "from-green-500 to-blue-600", 
+      bgColor: "bg-green-50",
+      borderColor: "border-green-200"
+    },
+    {
+      title: "For Service-Based SMEs",
+      systemName: "The Custom Operations Workflow",
+      description: "An integrated system that connects your existing software (CRM, project management, email) into a single, seamless workflow. We eliminate manual data entry and administrative drag, freeing you to focus on your clients.",
+      icon: Settings,
+      gradient: "from-purple-500 to-pink-600",
+      bgColor: "bg-purple-50", 
+      borderColor: "border-purple-200"
     }
   ];
 
@@ -506,6 +550,26 @@ export default function Home() {
           </div>
         )}
 
+        {/* Typebot Modal */}
+        {showTypebot && (
+          <div className="typeform-container">
+            <div className="typeform-wrapper">
+              <button 
+                className="typeform-close"
+                onClick={closeTypebot}
+                aria-label="Close chat"
+              >
+                ×
+              </button>
+              <iframe
+                className="typeform-embed"
+                src="https://typebot.io/monarch-ai-demo-6j8nxkc"
+                title="Typebot Chat"
+              />
+            </div>
+          </div>
+        )}
+
         {/* Navigation */}
         <nav className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-6 py-4">
@@ -645,6 +709,70 @@ export default function Home() {
             </AnimatedSection>
           </div>
         </section>
+
+        {/* Solutions Carousel Section */}
+        <AnimatedSection id="solutions" className="py-20 px-6 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-5xl md:text-6xl font-black text-black mb-6">
+                Your Business, Automated.
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Discover how our tailored automation solutions transform different industries, streamlining operations and accelerating growth.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-3 gap-8">
+              {solutions.map((solution, index) => {
+                const IconComponent = solution.icon;
+                return (
+                  <div key={index} className={`${solution.bgColor} ${solution.borderColor} border-2 rounded-3xl p-8 hover:border-gray-400 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl group relative overflow-hidden`}>
+                    {/* Gradient overlay on hover */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${solution.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500 rounded-3xl`}></div>
+                    
+                    <div className="relative z-10">
+                      {/* Icon */}
+                      <div className={`w-16 h-16 bg-gradient-to-br ${solution.gradient} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                        <IconComponent className="w-8 h-8 text-white" />
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">
+                        {solution.title}
+                      </div>
+                      <h3 className="text-2xl font-bold text-black mb-4 group-hover:text-gray-800 transition-colors">
+                        {solution.systemName}
+                      </h3>
+                      <p className="text-gray-600 mb-8 leading-relaxed">
+                        {solution.description}
+                      </p>
+                      
+                      {/* CTA Button */}
+                      <button 
+                        onClick={openTypebot}
+                        className="w-full bg-black text-white py-4 px-6 rounded-xl font-bold text-lg hover:bg-gray-800 transition-all duration-300 transform group-hover:scale-105 flex items-center justify-center space-x-2"
+                      >
+                        <span>Start My Analysis</span>
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Bottom CTA */}
+            <div className="text-center mt-16">
+              <div className="inline-flex items-center bg-gray-50 text-gray-700 px-6 py-3 rounded-full text-sm font-medium mb-4 border border-gray-200">
+                <Sparkles className="w-4 h-4 mr-2" />
+                All solutions include our 10-day delivery guarantee
+              </div>
+              <p className="text-gray-500 max-w-2xl mx-auto">
+                Don't see your industry? We create custom automation solutions for any service-based business. Let's discuss your specific needs.
+              </p>
+            </div>
+          </div>
+        </AnimatedSection>
 
 
         {/* Services Section */}
