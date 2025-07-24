@@ -281,7 +281,7 @@ export default function Home() {
           async
         />
         
-        {/* Enhanced CSS with smoother animations */}
+        {/* Enhanced CSS with Typeform isolation */}
         <style dangerouslySetInnerHTML={{
           __html: `
             @keyframes scroll {
@@ -290,9 +290,8 @@ export default function Home() {
             }
             
             @keyframes float {
-              0%, 100% { transform: translateY(0px) rotate(0deg); }
-              33% { transform: translateY(-8px) rotate(1deg); }
-              66% { transform: translateY(-4px) rotate(-1deg); }
+              0%, 100% { transform: translateY(0px); }
+              50% { transform: translateY(-10px); }
             }
             
             @keyframes glow {
@@ -307,9 +306,9 @@ export default function Home() {
             
             @keyframes celebrate {
               0%, 100% { transform: scale(1); }
-              25% { transform: scale(1.02); }
-              50% { transform: scale(1.05); }
-              75% { transform: scale(1.02); }
+              25% { transform: scale(1.05); }
+              50% { transform: scale(1.1); }
+              75% { transform: scale(1.05); }
             }
             
             @keyframes confetti {
@@ -319,11 +318,11 @@ export default function Home() {
             
             @keyframes pulse {
               0%, 100% { transform: scale(1); opacity: 1; }
-              50% { transform: scale(1.02); opacity: 0.9; }
+              50% { transform: scale(1.05); opacity: 0.8; }
             }
             
             .animate-scroll {
-              animation: scroll 60s linear infinite;
+              animation: scroll 40s linear infinite;
             }
             
             .animate-scroll:hover {
@@ -335,19 +334,18 @@ export default function Home() {
             }
             
             .tech-card {
-              transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+              transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
               backdrop-filter: blur(10px);
             }
             
             .tech-card:hover {
-              transform: translateY(-8px) scale(1.03);
-              animation: glow 3s ease-in-out infinite;
+              transform: translateY(-12px) scale(1.05);
+              animation: glow 2s ease-in-out infinite;
             }
             
             .tech-card:hover .tech-icon {
-              transform: scale(1.1) rotate(3deg);
-              filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
-              transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+              transform: scale(1.1) rotate(5deg);
+              filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
             }
             
             .tech-card:hover .tech-label {
@@ -356,11 +354,11 @@ export default function Home() {
             }
             
             .tech-icon {
-              transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
             
             .tech-label {
-              transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+              transition: all 0.3s ease;
             }
             
             .carousel-container {
@@ -368,13 +366,13 @@ export default function Home() {
             }
             
             .floating-bg {
-              animation: float 8s ease-in-out infinite;
+              animation: float 6s ease-in-out infinite;
             }
             
             .shimmer-effect {
               background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
               background-size: 200px 100%;
-              animation: shimmer 4s infinite;
+              animation: shimmer 3s infinite;
             }
             
             .tech-card::before {
@@ -385,7 +383,7 @@ export default function Home() {
               width: 100%;
               height: 100%;
               background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-              transition: left 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+              transition: left 0.6s;
               border-radius: 1rem;
             }
             
@@ -394,7 +392,7 @@ export default function Home() {
             }
             
             .celebrate-btn {
-              animation: celebrate 1s ease-in-out;
+              animation: celebrate 0.6s ease-in-out;
             }
             
             .confetti {
@@ -402,50 +400,16 @@ export default function Home() {
               width: 10px;
               height: 10px;
               background: #22c55e;
-              animation: confetti 4s linear infinite;
+              animation: confetti 3s linear infinite;
             }
             
-            .confetti:nth-child(2) { background: #3b82f6; animation-delay: 0.8s; left: 20%; }
-            .confetti:nth-child(3) { background: #f59e0b; animation-delay: 1.6s; left: 40%; }
-            .confetti:nth-child(4) { background: #ef4444; animation-delay: 2.4s; left: 60%; }
-            .confetti:nth-child(5) { background: #8b5cf6; animation-delay: 3.2s; left: 80%; }
+            .confetti:nth-child(2) { background: #3b82f6; animation-delay: 0.5s; left: 20%; }
+            .confetti:nth-child(3) { background: #f59e0b; animation-delay: 1s; left: 40%; }
+            .confetti:nth-child(4) { background: #ef4444; animation-delay: 1.5s; left: 60%; }
+            .confetti:nth-child(5) { background: #8b5cf6; animation-delay: 2s; left: 80%; }
             
             .pulse-success {
-              animation: pulse 3s infinite;
-            }
-            
-            /* Smooth hover transitions for cards */
-            .hover\\:border-gray-300:hover {
-              transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            }
-            
-            .hover\\:-translate-y-1:hover {
-              transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            }
-            
-            .hover\\:-translate-y-2:hover {
-              transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            }
-            
-            .hover\\:shadow-xl:hover {
-              transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            }
-            
-            .hover\\:shadow-2xl:hover {
-              transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-            }
-            
-            /* Button hover animations */
-            .group:hover .group-hover\\:translate-x-1 {
-              transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            }
-            
-            .group:hover .group-hover\\:scale-105 {
-              transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            }
-            
-            .group:hover .group-hover\\:scale-110 {
-              transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+              animation: pulse 2s infinite;
             }
             
             /* TYPEFORM ISOLATION - COMPLETELY DISABLE ALL ANIMATIONS */
@@ -476,13 +440,6 @@ export default function Home() {
               display: flex;
               align-items: center;
               justify-content: center;
-              backdrop-filter: blur(4px);
-              animation: fadeIn 0.3s ease-out;
-            }
-            
-            @keyframes fadeIn {
-              from { opacity: 0; }
-              to { opacity: 1; }
             }
             
             .typeform-wrapper {
@@ -493,18 +450,6 @@ export default function Home() {
               border-radius: 12px;
               position: relative;
               overflow: hidden;
-              animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            }
-            
-            @keyframes slideIn {
-              from { 
-                opacity: 0;
-                transform: scale(0.95) translateY(20px);
-              }
-              to { 
-                opacity: 1;
-                transform: scale(1) translateY(0);
-              }
             }
             
             .typeform-close {
@@ -524,12 +469,10 @@ export default function Home() {
               z-index: 10001;
               font-size: 18px;
               font-weight: bold;
-              transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             }
             
             .typeform-close:hover {
               background: #333;
-              transform: scale(1.1);
             }
             
             /* Typeform iframe styling */
@@ -649,10 +592,10 @@ export default function Home() {
                 <a href="#contact" className="text-gray-700 hover:text-black transition-colors font-medium">Contact</a>
                 <button 
                   onClick={() => window.open('https://cal.com/monarch-ai-cloud/30min', '_blank')}
-                  className="group bg-black text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition-all duration-500 ease-out flex items-center space-x-2"
+                  className="group bg-black text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition-all duration-300 flex items-center space-x-2"
                 >
                   <span>Free Consultation</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-400 ease-out" />
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
 
@@ -711,10 +654,10 @@ export default function Home() {
                   {/* Option 1: Popup Typeform (Recommended) */}
                   <button 
                     onClick={openTypeformPopup}
-                    className="group bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-800 transition-all duration-700 ease-out transform hover:-translate-y-1 hover:shadow-2xl flex items-center space-x-3"
+                    className="group bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-800 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-2xl flex items-center space-x-3"
                   >
                     <span>Get Your Free Automation Blueprint</span>
-                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
+                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
                   
                   {/* Option 2: Modal Typeform */}
@@ -755,7 +698,7 @@ export default function Home() {
                     { value: "10", label: "Business Days", subtext: "Delivery guarantee" },
                     { value: "100%", label: "Satisfaction Rate", subtext: "Client success stories" }
                   ].map((stat, index) => (
-                    <div key={index} className="bg-white border border-gray-200 rounded-2xl p-8 text-center hover:border-gray-300 transition-all duration-700 ease-out transform hover:-translate-y-1 hover:shadow-lg">
+                    <div key={index} className="bg-white border border-gray-200 rounded-2xl p-8 text-center hover:border-gray-300 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-lg">
                       <div className="text-4xl font-black text-black mb-2">{stat.value}</div>
                       <div className="text-gray-800 font-semibold mb-1">{stat.label}</div>
                       <div className="text-gray-500 text-sm">{stat.subtext}</div>
@@ -1384,11 +1327,11 @@ export default function Home() {
         <div className="fixed bottom-6 right-6 z-50">
           <button 
             onClick={openTypeformPopup}
-            className="bg-black text-white px-6 py-4 rounded-full font-bold shadow-2xl hover:bg-gray-800 transition-all duration-500 ease-out transform hover:-translate-y-1 flex items-center space-x-2"
+            className="bg-black text-white px-6 py-4 rounded-full font-bold shadow-2xl hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-1 flex items-center space-x-2"
           >
             <span className="hidden sm:inline">Quick Form</span>
             <span className="sm:hidden">📝</span>
-            <ArrowRight className="w-4 h-4 transition-transform duration-400 ease-out" />
+            <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>
