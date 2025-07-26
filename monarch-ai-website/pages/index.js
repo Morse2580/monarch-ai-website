@@ -14,6 +14,35 @@ export default function Home() {
   // Typebot integration state
   const [showTypebot, setShowTypebot] = useState(false);
 
+  // Set document title and meta tags
+  useEffect(() => {
+    document.title = "Monarch AI - Intelligent Systems for Growth";
+    
+    // Create or update meta tags
+    const updateMetaTag = (name, content, property = false) => {
+      const selector = property ? `meta[property="${name}"]` : `meta[name="${name}"]`;
+      let meta = document.querySelector(selector);
+      if (!meta) {
+        meta = document.createElement('meta');
+        if (property) {
+          meta.setAttribute('property', name);
+        } else {
+          meta.setAttribute('name', name);
+        }
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', content);
+    };
+
+    updateMetaTag('description', 'Transform your business with tailored AI and process automation solutions. Replacing operational drag with streamlined workflows that give you back your time.');
+    updateMetaTag('keywords', 'AI automation, business automation, workflow optimization, process automation, Belgium, Brussels');
+    updateMetaTag('author', 'Moses Njau');
+    updateMetaTag('og:title', 'Monarch AI - Intelligent Systems for Growth', true);
+    updateMetaTag('og:description', 'Transform your business with tailored AI and process automation solutions.', true);
+    updateMetaTag('og:type', 'website', true);
+    updateMetaTag('og:url', 'https://monarch-ai.com', true);
+  }, []);
+
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!isFormFocused && !showTypeform && !showTypebot) {
@@ -69,6 +98,45 @@ export default function Home() {
       document.head.appendChild(script);
     }
   }, [showTypeform]);
+
+  // Load Cal.com script
+  useEffect(() => {
+    if (!window.Cal) {
+      const script = document.createElement('script');
+      script.innerHTML = `
+        (function (C, A, L) { 
+          let p = function (a, ar) { a.q.push(ar); }; 
+          let d = C.document; 
+          C.Cal = C.Cal || function () { 
+            let cal = C.Cal; 
+            let ar = arguments; 
+            if (!cal.loaded) { 
+              cal.ns = {}; 
+              cal.q = cal.q || []; 
+              d.head.appendChild(d.createElement("script")).src = A; 
+              cal.loaded = true; 
+            } 
+            if (ar[0] === L) { 
+              const api = function () { p(api, arguments); }; 
+              const namespace = ar[1]; 
+              api.q = api.q || []; 
+              if(typeof namespace === "string"){
+                cal.ns[namespace] = cal.ns[namespace] || api;
+                p(cal.ns[namespace], ar);
+                p(cal, ["initNamespace", namespace]);
+              } else p(cal, ar); 
+              return;
+            } 
+            p(cal, ar); 
+          }; 
+        })(window, "https://app.cal.com/embed/embed.js", "init");
+        Cal("init", "30min", {origin:"https://app.cal.com"});
+        Cal.ns["30min"]("floatingButton", {"calLink":"monarch-ai-cloud/30min","config":{"layout":"month_view"}}); 
+        Cal.ns["30min"]("ui", {"hideEventTypeDetails":false,"layout":"month_view"});
+      `;
+      document.head.appendChild(script);
+    }
+  }, []);
 
   const FloatingOrb = ({ size = 'w-64 h-64', position, delay = 0 }) => (
     <div 
