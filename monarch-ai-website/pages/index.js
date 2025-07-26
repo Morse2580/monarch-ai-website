@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Head from 'next/head';
 import { ChevronRight, ArrowRight, Zap, Bot, Target, Sparkles, CheckCircle, Play, Users, Clock, Star, ArrowDown, Menu, X, Phone, Mail, MapPin, BarChart3, MessageSquare, Settings } from 'lucide-react';
 
 export default function Home() {
@@ -128,7 +127,7 @@ export default function Home() {
     window.open('https://form.typeform.com/to/uWjbOr2r', '_blank');
   };
 
-  // Typebot handler
+  // Typebot handlers
   const openTypebot = () => {
     setShowTypebot(true);
     setIsFormFocused(true);
@@ -144,25 +143,37 @@ export default function Home() {
       title: "Deep Analysis",
       description: "We map every workflow, identify bottlenecks, and understand your current processes to design the perfect automation blueprint.",
       duration: "Days 1-2",
-      icon: "🔍"
+      icon: Target,
+      color: "from-blue-500 to-blue-600",
+      bgColor: "bg-blue-50",
+      step: "01"
     },
     {
       title: "Blueprint Design",
       description: "Custom automation architecture tailored to your specific business needs, creating a transparent process with fixed pricing.",
       duration: "Days 3-4", 
-      icon: "📋"
+      icon: Settings,
+      color: "from-purple-500 to-purple-600",
+      bgColor: "bg-purple-50",
+      step: "02"
     },
     {
       title: "System Development",
       description: "Building and integrating your intelligent automation systems with existing tools, ensuring seamless operation.",
       duration: "Days 5-8",
-      icon: "⚙️"
+      icon: Zap,
+      color: "from-green-500 to-green-600",
+      bgColor: "bg-green-50",
+      step: "03"
     },
     {
       title: "Delivery & Support",
       description: "Functional system delivered in 10 business days with full training and ongoing support for your success.",
       duration: "Days 9-10",
-      icon: "🚀"
+      icon: CheckCircle,
+      color: "from-orange-500 to-orange-600",
+      bgColor: "bg-orange-50",
+      step: "04"
     }
   ];
 
@@ -263,25 +274,10 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>Monarch AI - Intelligent Systems for Growth</title>
-        <meta name="description" content="Transform your business with tailored AI and process automation solutions. Replacing operational drag with streamlined workflows that give you back your time." />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="keywords" content="AI automation, business automation, workflow optimization, process automation, Belgium, Brussels" />
-        <meta name="author" content="Moses Njau" />
-        <link rel="icon" href="/favicon.svg" />
-        <meta property="og:title" content="Monarch AI - Intelligent Systems for Growth" />
-        <meta property="og:description" content="Transform your business with tailored AI and process automation solutions." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://monarch-ai.com" />
-        
-        {/* Typeform embed script */}
-        <script
-          src="https://embed.typeform.com/next/embed.js"
-          async
-        />
-        
-        {/* Enhanced CSS with Typeform isolation */}
+      <div className="min-h-screen bg-white overflow-hidden relative">
+
+
+        {/* Enhanced CSS with FIXED modal positioning */}
         <style dangerouslySetInnerHTML={{
           __html: `
             @keyframes scroll {
@@ -290,8 +286,9 @@ export default function Home() {
             }
             
             @keyframes float {
-              0%, 100% { transform: translateY(0px); }
-              50% { transform: translateY(-10px); }
+              0%, 100% { transform: translateY(0px) rotate(0deg); }
+              33% { transform: translateY(-8px) rotate(1deg); }
+              66% { transform: translateY(-4px) rotate(-1deg); }
             }
             
             @keyframes glow {
@@ -306,9 +303,9 @@ export default function Home() {
             
             @keyframes celebrate {
               0%, 100% { transform: scale(1); }
-              25% { transform: scale(1.05); }
-              50% { transform: scale(1.1); }
-              75% { transform: scale(1.05); }
+              25% { transform: scale(1.02); }
+              50% { transform: scale(1.05); }
+              75% { transform: scale(1.02); }
             }
             
             @keyframes confetti {
@@ -318,11 +315,27 @@ export default function Home() {
             
             @keyframes pulse {
               0%, 100% { transform: scale(1); opacity: 1; }
-              50% { transform: scale(1.05); opacity: 0.8; }
+              50% { transform: scale(1.02); opacity: 0.9; }
+            }
+            
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            
+            @keyframes slideIn {
+              from { 
+                opacity: 0;
+                transform: scale(0.95) translateY(20px) !important;
+              }
+              to { 
+                opacity: 1;
+                transform: scale(1) translateY(0) !important;
+              }
             }
             
             .animate-scroll {
-              animation: scroll 40s linear infinite;
+              animation: scroll 60s linear infinite;
             }
             
             .animate-scroll:hover {
@@ -334,18 +347,19 @@ export default function Home() {
             }
             
             .tech-card {
-              transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+              transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
               backdrop-filter: blur(10px);
             }
             
             .tech-card:hover {
-              transform: translateY(-12px) scale(1.05);
-              animation: glow 2s ease-in-out infinite;
+              transform: translateY(-8px) scale(1.03);
+              animation: glow 3s ease-in-out infinite;
             }
             
             .tech-card:hover .tech-icon {
-              transform: scale(1.1) rotate(5deg);
-              filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+              transform: scale(1.1) rotate(3deg);
+              filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+              transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             }
             
             .tech-card:hover .tech-label {
@@ -354,11 +368,11 @@ export default function Home() {
             }
             
             .tech-icon {
-              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             }
             
             .tech-label {
-              transition: all 0.3s ease;
+              transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             }
             
             .carousel-container {
@@ -366,13 +380,13 @@ export default function Home() {
             }
             
             .floating-bg {
-              animation: float 6s ease-in-out infinite;
+              animation: float 8s ease-in-out infinite;
             }
             
             .shimmer-effect {
               background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
               background-size: 200px 100%;
-              animation: shimmer 3s infinite;
+              animation: shimmer 4s infinite;
             }
             
             .tech-card::before {
@@ -383,7 +397,7 @@ export default function Home() {
               width: 100%;
               height: 100%;
               background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-              transition: left 0.6s;
+              transition: left 0.8s cubic-bezier(0.16, 1, 0.3, 1);
               border-radius: 1rem;
             }
             
@@ -392,7 +406,7 @@ export default function Home() {
             }
             
             .celebrate-btn {
-              animation: celebrate 0.6s ease-in-out;
+              animation: celebrate 1s ease-in-out;
             }
             
             .confetti {
@@ -400,130 +414,195 @@ export default function Home() {
               width: 10px;
               height: 10px;
               background: #22c55e;
-              animation: confetti 3s linear infinite;
+              animation: confetti 4s linear infinite;
             }
             
-            .confetti:nth-child(2) { background: #3b82f6; animation-delay: 0.5s; left: 20%; }
-            .confetti:nth-child(3) { background: #f59e0b; animation-delay: 1s; left: 40%; }
-            .confetti:nth-child(4) { background: #ef4444; animation-delay: 1.5s; left: 60%; }
-            .confetti:nth-child(5) { background: #8b5cf6; animation-delay: 2s; left: 80%; }
+            .confetti:nth-child(2) { background: #3b82f6; animation-delay: 0.8s; left: 20%; }
+            .confetti:nth-child(3) { background: #f59e0b; animation-delay: 1.6s; left: 40%; }
+            .confetti:nth-child(4) { background: #ef4444; animation-delay: 2.4s; left: 60%; }
+            .confetti:nth-child(5) { background: #8b5cf6; animation-delay: 3.2s; left: 80%; }
             
             .pulse-success {
-              animation: pulse 2s infinite;
+              animation: pulse 3s infinite;
             }
             
-            /* TYPEFORM ISOLATION - COMPLETELY DISABLE ALL ANIMATIONS */
+            /* Smooth hover transitions for cards */
+            .hover\\:border-gray-300:hover {
+              transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            
+            .hover\\:-translate-y-1:hover {
+              transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            
+            .hover\\:-translate-y-2:hover {
+              transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            
+            .hover\\:shadow-xl:hover {
+              transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            
+            .hover\\:shadow-2xl:hover {
+              transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            
+            /* Button hover animations */
+            .group:hover .group-hover\\:translate-x-1 {
+              transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            
+            .group:hover .group-hover\\:scale-105 {
+              transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            
+            .group:hover .group-hover\\:scale-110 {
+              transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            
+            /* IMPROVED TYPEFORM/TYPEBOT ISOLATION - FIXED CSS */
             body.typeform-active {
               scroll-behavior: auto;
+              overflow: hidden;
             }
             
-            body.typeform-active * {
+            /* Only disable animations for specific elements, NOT the modal */
+            body.typeform-active [data-animate] {
               animation-play-state: paused !important;
-              transform: none !important;
               transition: none !important;
             }
             
-            body.typeform-active [data-animate] {
-              transform: none !important;
-              animation: none !important;
+            body.typeform-active .floating-bg,
+            body.typeform-active .animate-scroll,
+            body.typeform-active .tech-card {
+              animation-play-state: paused !important;
+              transition: none !important;
+            }
+            
+            /* Typebot container with MAXIMUM specificity */
+            .typebot-container {
+              position: fixed !important;
+              top: 0 !important;
+              left: 0 !important;
+              width: 100vw !important;
+              height: 100vh !important;
+              background: rgba(0, 0, 0, 0.8) !important;
+              z-index: 99999 !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              backdrop-filter: blur(4px) !important;
+              animation: fadeIn 0.3s ease-out !important;
+            }
+            
+            .typebot-wrapper {
+              width: 90% !important;
+              max-width: 800px !important;
+              height: 90% !important;
+              background: white !important;
+              border-radius: 12px !important;
+              position: relative !important;
+              overflow: hidden !important;
+              animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+              transform: scale(1) !important;
+              opacity: 1 !important;
+            }
+            
+            .typebot-close {
+              position: absolute !important;
+              top: 16px !important;
+              right: 16px !important;
+              background: #000 !important;
+              color: white !important;
+              border: none !important;
+              border-radius: 50% !important;
+              width: 40px !important;
+              height: 40px !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              cursor: pointer !important;
+              z-index: 100001 !important;
+              font-size: 18px !important;
+              font-weight: bold !important;
+              transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            }
+            
+            .typebot-close:hover {
+              background: #333 !important;
+              transform: scale(1.1) !important;
+            }
+            
+            /* Typebot iframe styling */
+            .typebot-embed {
+              width: 100% !important;
+              height: 100% !important;
+              border: none !important;
+              border-radius: 12px !important;
             }
             
             /* Typeform container isolation */
             .typeform-container {
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100vw;
-              height: 100vh;
-              background: rgba(0, 0, 0, 0.8);
-              z-index: 9999;
-              display: flex;
-              align-items: center;
-              justify-content: center;
+              position: fixed !important;
+              top: 0 !important;
+              left: 0 !important;
+              width: 100vw !important;
+              height: 100vh !important;
+              background: rgba(0, 0, 0, 0.8) !important;
+              z-index: 99999 !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              backdrop-filter: blur(4px) !important;
+              animation: fadeIn 0.3s ease-out !important;
             }
             
             .typeform-wrapper {
-              width: 90%;
-              max-width: 800px;
-              height: 90%;
-              background: white;
-              border-radius: 12px;
-              position: relative;
-              overflow: hidden;
+              width: 90% !important;
+              max-width: 800px !important;
+              height: 90% !important;
+              background: white !important;
+              border-radius: 12px !important;
+              position: relative !important;
+              overflow: hidden !important;
+              animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
             }
             
             .typeform-close {
-              position: absolute;
-              top: 16px;
-              right: 16px;
-              background: #000;
-              color: white;
-              border: none;
-              border-radius: 50%;
-              width: 40px;
-              height: 40px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              cursor: pointer;
-              z-index: 10001;
-              font-size: 18px;
-              font-weight: bold;
+              position: absolute !important;
+              top: 16px !important;
+              right: 16px !important;
+              background: #000 !important;
+              color: white !important;
+              border: none !important;
+              border-radius: 50% !important;
+              width: 40px !important;
+              height: 40px !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              cursor: pointer !important;
+              z-index: 100001 !important;
+              font-size: 18px !important;
+              font-weight: bold !important;
+              transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
             }
             
             .typeform-close:hover {
-              background: #333;
+              background: #333 !important;
+              transform: scale(1.1) !important;
             }
             
             /* Typeform iframe styling */
             .typeform-embed {
-              width: 100%;
-              height: 100%;
-              border: none;
-              border-radius: 12px;
+              width: 100% !important;
+              height: 100% !important;
+              border: none !important;
+              border-radius: 12px !important;
             }
           `
         }} />
-        
-        {/* Cal.com embed script */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function (C, A, L) { 
-                let p = function (a, ar) { a.q.push(ar); }; 
-                let d = C.document; 
-                C.Cal = C.Cal || function () { 
-                  let cal = C.Cal; 
-                  let ar = arguments; 
-                  if (!cal.loaded) { 
-                    cal.ns = {}; 
-                    cal.q = cal.q || []; 
-                    d.head.appendChild(d.createElement("script")).src = A; 
-                    cal.loaded = true; 
-                  } 
-                  if (ar[0] === L) { 
-                    const api = function () { p(api, arguments); }; 
-                    const namespace = ar[1]; 
-                    api.q = api.q || []; 
-                    if(typeof namespace === "string"){
-                      cal.ns[namespace] = cal.ns[namespace] || api;
-                      p(cal.ns[namespace], ar);
-                      p(cal, ["initNamespace", namespace]);
-                    } else p(cal, ar); 
-                    return;
-                  } 
-                  p(cal, ar); 
-                }; 
-              })(window, "https://app.cal.com/embed/embed.js", "init");
-              Cal("init", "30min", {origin:"https://app.cal.com"});
-              Cal.ns["30min"]("floatingButton", {"calLink":"monarch-ai-cloud/30min","config":{"layout":"month_view"}}); 
-              Cal.ns["30min"]("ui", {"hideEventTypeDetails":false,"layout":"month_view"});
-            `
-          }}
-        />
-      </Head>
 
-      <div className="min-h-screen bg-white overflow-hidden relative">
         {/* Floating Background Elements */}
         <FloatingOrb size="w-96 h-96" position="-top-48 -right-48" delay={0} />
         <FloatingOrb size="w-80 h-80" position="top-1/3 -left-40" delay={2} />
@@ -537,6 +616,7 @@ export default function Home() {
                 className="typeform-close"
                 onClick={closeTypeform}
                 aria-label="Close form"
+                type="button"
               >
                 ×
               </button>
@@ -550,21 +630,24 @@ export default function Home() {
           </div>
         )}
 
-        {/* Typebot Modal */}
+        {/* Typebot Modal - FIXED IMPLEMENTATION */}
         {showTypebot && (
-          <div className="typeform-container">
-            <div className="typeform-wrapper">
+          <div className="typebot-container">
+            <div className="typebot-wrapper">
               <button 
-                className="typeform-close"
+                className="typebot-close"
                 onClick={closeTypebot}
                 aria-label="Close chat"
+                type="button"
               >
                 ×
               </button>
               <iframe
-                className="typeform-embed"
-                src="https://typebot.io/monarch-ai-demo-6j8nxkc"
+                className="typebot-embed"
+                src="https://typebot.io/monarch-ai-demo-6j8nxkc?hideHeader=true"
                 title="Typebot Chat"
+                allow="microphone; camera"
+                loading="lazy"
               />
             </div>
           </div>
@@ -592,10 +675,10 @@ export default function Home() {
                 <a href="#contact" className="text-gray-700 hover:text-black transition-colors font-medium">Contact</a>
                 <button 
                   onClick={() => window.open('https://cal.com/monarch-ai-cloud/30min', '_blank')}
-                  className="group bg-black text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition-all duration-300 flex items-center space-x-2"
+                  className="group bg-black text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition-all duration-500 ease-out flex items-center space-x-2"
                 >
                   <span>Free Consultation</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-400 ease-out" />
                 </button>
               </div>
 
@@ -654,29 +737,11 @@ export default function Home() {
                   {/* Option 1: Popup Typeform (Recommended) */}
                   <button 
                     onClick={openTypeformPopup}
-                    className="group bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-800 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-2xl flex items-center space-x-3"
+                    className="group bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-800 transition-all duration-700 ease-out transform hover:-translate-y-1 hover:shadow-2xl flex items-center space-x-3"
                   >
                     <span>Get Your Free Automation Blueprint</span>
-                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
                   </button>
-                  
-                  {/* Option 2: Modal Typeform */}
-                  {/* <button 
-                    onClick={openTypeform}
-                    className="group bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-800 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-2xl flex items-center space-x-3"
-                  >
-                    <span>Get Your Free Automation Blueprint</span>
-                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </button> */}
-                  
-                  {/* Option 3: Direct redirect */}
-                  {/* <button 
-                    onClick={redirectToTypeform}
-                    className="group bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-800 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-2xl flex items-center space-x-3"
-                  >
-                    <span>Get Your Free Automation Blueprint</span>
-                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </button> */}
                   
                   <div className="flex items-center space-x-3">
                     <div className="flex items-center space-x-2 text-gray-600">
@@ -698,7 +763,7 @@ export default function Home() {
                     { value: "10", label: "Business Days", subtext: "Delivery guarantee" },
                     { value: "100%", label: "Satisfaction Rate", subtext: "Client success stories" }
                   ].map((stat, index) => (
-                    <div key={index} className="bg-white border border-gray-200 rounded-2xl p-8 text-center hover:border-gray-300 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-lg">
+                    <div key={index} className="bg-white border border-gray-200 rounded-2xl p-8 text-center hover:border-gray-300 transition-all duration-700 ease-out transform hover:-translate-y-1 hover:shadow-lg">
                       <div className="text-4xl font-black text-black mb-2">{stat.value}</div>
                       <div className="text-gray-800 font-semibold mb-1">{stat.label}</div>
                       <div className="text-gray-500 text-sm">{stat.subtext}</div>
@@ -722,39 +787,42 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid lg:grid-cols-3 gap-8 items-stretch">
               {solutions.map((solution, index) => {
                 const IconComponent = solution.icon;
                 return (
-                  <div key={index} className={`${solution.bgColor} ${solution.borderColor} border-2 rounded-3xl p-8 hover:border-gray-400 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl group relative overflow-hidden`}>
-                    {/* Gradient overlay on hover */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${solution.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500 rounded-3xl`}></div>
+                  <div key={index} className={`${solution.bgColor} ${solution.borderColor} border-2 rounded-3xl p-8 group relative overflow-hidden flex flex-col min-h-[500px]`}>
                     
-                    <div className="relative z-10">
+                    <div className="relative z-10 flex flex-col h-full">
                       {/* Icon */}
-                      <div className={`w-16 h-16 bg-gradient-to-br ${solution.gradient} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                      <div className={`w-16 h-16 bg-gradient-to-br ${solution.gradient} rounded-2xl flex items-center justify-center mb-6 flex-shrink-0`}>
                         <IconComponent className="w-8 h-8 text-white" />
                       </div>
                       
-                      {/* Content */}
-                      <div className="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">
-                        {solution.title}
+                      {/* Content - flex-grow to fill available space */}
+                      <div className="flex-1 flex flex-col">
+                        <div className="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">
+                          {solution.title}
+                        </div>
+                        <h3 className="text-2xl font-bold text-black mb-4">
+                          {solution.systemName}
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed flex-1 mb-8">
+                          {solution.description}
+                        </p>
                       </div>
-                      <h3 className="text-2xl font-bold text-black mb-4 group-hover:text-gray-800 transition-colors">
-                        {solution.systemName}
-                      </h3>
-                      <p className="text-gray-600 mb-8 leading-relaxed">
-                        {solution.description}
-                      </p>
                       
-                      {/* CTA Button */}
-                      <button 
-                        onClick={openTypebot}
-                        className="w-full bg-black text-white py-4 px-6 rounded-xl font-bold text-lg hover:bg-gray-800 transition-all duration-300 transform group-hover:scale-105 flex items-center justify-center space-x-2"
-                      >
-                        <span>Start My Analysis</span>
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                      </button>
+                      {/* CTA Button - always at bottom */}
+                      <div className="mt-auto flex-shrink-0">
+                        <button 
+                          onClick={openTypebot}
+                          type="button"
+                          className="w-full bg-black text-white py-4 px-6 rounded-xl font-bold text-lg hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center space-x-2"
+                        >
+                          <span>Start My Analysis</span>
+                          <ArrowRight className="w-5 h-5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 );
@@ -773,7 +841,6 @@ export default function Home() {
             </div>
           </div>
         </AnimatedSection>
-
 
         {/* Services Section */}
         <AnimatedSection id="services" className="py-20 px-6 bg-gray-50">
@@ -839,7 +906,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/relume.jpeg" alt="Relume" className="w-full h-full object-contain" />
+                        <img src="/images/relume.jpeg" alt="Relume" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Relume</span>
@@ -849,7 +916,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/airtable.svg" alt="Airtable" className="w-full h-full object-contain" />
+                        <img src="/images/airtable.svg" alt="Airtable" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Airtable</span>
@@ -859,7 +926,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                         <img src="/images/N8n.svg" alt="N8N" className="w-full h-full object-contain" />
+                         <img src="/images/N8n.svg" alt="N8N" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">N8N</span>
@@ -869,7 +936,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/Google_Sheets_Logo.svg" alt="Google Sheets" className="w-full h-full object-contain" />
+                        <img src="/images/Google_Sheets_Logo.svg" alt="Google Sheets" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Google Sheets</span>
@@ -879,7 +946,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/openai.svg" alt="OpenAI" className="w-full h-full object-contain" />
+                        <img src="/images/openai.svg" alt="OpenAI" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">OpenAI</span>
@@ -889,7 +956,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/gemini-color.svg" alt="Gemini" className="w-full h-full object-contain" />
+                        <img src="/images/gemini-color.svg" alt="Gemini" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Gemini</span>
@@ -899,7 +966,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/make-color.svg" alt="Make" className="w-full h-full object-contain" />
+                        <img src="/images/make-color.svg" alt="Make" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Make</span>
@@ -909,7 +976,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/webflow.svg" alt="Webflow" className="w-full h-full object-contain" />
+                        <img src="/images/webflow.svg" alt="Webflow" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Webflow</span>
@@ -919,10 +986,20 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/base44.jpeg" alt="Base44" className="w-full h-full object-contain" />
+                        <img src="/images/base44.jpeg" alt="Base44" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Base44</span>
+                  </div>
+
+                  {/* Notion */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/Notion_Logo_0.svg" alt="Notion" className="w-12 h-12 object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Notion</span>
                   </div>
                 </div>
 
@@ -932,7 +1009,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/relume.jpeg" alt="Relume" className="w-full h-full object-contain" />
+                        <img src="/images/relume.jpeg" alt="Relume" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Relume</span>
@@ -942,7 +1019,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/airtable.svg" alt="Airtable" className="w-full h-full object-contain" />
+                        <img src="/images/airtable.svg" alt="Airtable" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Airtable</span>
@@ -952,7 +1029,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/N8n.svg" alt="N8N" className="w-full h-full object-contain" />
+                        <img src="/images/N8n.svg" alt="N8N" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">N8N</span>
@@ -962,7 +1039,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/Google_Sheets_Logo.svg" alt="Google Sheets" className="w-full h-full object-contain" />
+                        <img src="/images/Google_Sheets_Logo.svg" alt="Google Sheets" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Google Sheets</span>
@@ -972,7 +1049,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/openai.svg" alt="OpenAI" className="w-full h-full object-contain" />
+                        <img src="/images/openai.svg" alt="OpenAI" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">OpenAI</span>
@@ -982,7 +1059,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/gemini-color.svg" alt="Gemini" className="w-full h-full object-contain" />
+                        <img src="/images/gemini-color.svg" alt="Gemini" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Gemini</span>
@@ -992,7 +1069,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/make-color.svg" alt="Make" className="w-full h-full object-contain" />
+                        <img src="/images/make-color.svg" alt="Make" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Make</span>
@@ -1002,7 +1079,7 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/webflow.svg" alt="Webflow" className="w-full h-full object-contain" />
+                        <img src="/images/webflow.svg" alt="Webflow" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Webflow</span>
@@ -1012,10 +1089,20 @@ export default function Home() {
                   <div className="flex flex-col items-center group mx-4">
                     <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
                       <div className="tech-icon">
-                        <img src="/images/base44.jpeg" alt="Base44" className="w-full h-full object-contain" />
+                        <img src="/images/base44.jpeg" alt="Base44" className="w-12 h-12 object-contain" />
                       </div>
                     </div>
                     <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Base44</span>
+                  </div>
+
+                  {/* Notion */}
+                  <div className="flex flex-col items-center group mx-4">
+                    <div className="tech-card relative w-24 h-24 bg-white/80 border border-gray-200/50 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                      <div className="tech-icon">
+                        <img src="/images/Notion_Logo_0.svg" alt="Notion" className="w-12 h-12 object-contain" />
+                      </div>
+                    </div>
+                    <span className="tech-label text-sm font-medium text-gray-700 whitespace-nowrap">Notion</span>
                   </div>
                 </div>
               </div>
@@ -1063,21 +1150,63 @@ export default function Home() {
             </div>
 
             <div className="grid lg:grid-cols-4 gap-8">
-              {processes.map((process, index) => (
-                <div key={index} className="relative">
-                  <div className="bg-white border border-gray-200 rounded-3xl p-8 text-center hover:border-gray-300 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl">
-                    <div className="text-5xl mb-6">{process.icon}</div>
-                    <div className="text-sm font-bold text-gray-500 mb-2">{process.duration}</div>
-                    <h3 className="text-xl font-bold text-black mb-4">{process.title}</h3>
-                    <p className="text-gray-600 leading-relaxed">{process.description}</p>
-                  </div>
-                  {index < processes.length - 1 && (
-                    <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2">
-                      <ArrowRight className="w-6 h-6 text-gray-300" />
+              {processes.map((process, index) => {
+                const IconComponent = process.icon;
+                return (
+                  <div key={index} className="relative">
+                    <div className={`${process.bgColor} border-2 border-gray-200 rounded-2xl p-8 text-center relative overflow-hidden group`}>
+                      {/* Step Number */}
+                      <div className="absolute top-4 right-4 text-6xl font-black text-black/5 select-none">
+                        {process.step}
+                      </div>
+                      
+                      {/* Icon Container */}
+                      <div className={`w-20 h-20 bg-gradient-to-br ${process.color} rounded-2xl flex items-center justify-center mb-6 mx-auto relative z-10`}>
+                        <IconComponent className="w-10 h-10 text-white" />
+                      </div>
+                      
+                      {/* Duration Badge */}
+                      <div className="inline-flex items-center bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full px-4 py-2 mb-4">
+                        <Clock className="w-4 h-4 text-gray-600 mr-2" />
+                        <span className="text-sm font-semibold text-gray-700">{process.duration}</span>
+                      </div>
+                      
+                      {/* Content */}
+                      <h3 className="text-2xl font-bold text-black mb-4">{process.title}</h3>
+                      <p className="text-gray-600 leading-relaxed text-sm">{process.description}</p>
                     </div>
-                  )}
+                    
+                    {/* Arrow connector */}
+                    {index < processes.length - 1 && (
+                      <div className="hidden lg:flex absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+                        <div className="w-8 h-8 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center">
+                          <ArrowRight className="w-4 h-4 text-gray-600" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Bottom CTA */}
+            <div className="text-center mt-16">
+              <div className="bg-white border border-gray-200 rounded-2xl p-8 max-w-4xl mx-auto">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-xl flex items-center justify-center">
+                    <Star className="w-6 h-6 text-white" />
+                  </div>
                 </div>
-              ))}
+                <h3 className="text-2xl font-bold text-black mb-3">Ready to Transform Your Business?</h3>
+                <p className="text-gray-600 mb-6">Join hundreds of businesses that have automated their growth with our proven 10-day process.</p>
+                <button 
+                  onClick={() => window.open('https://cal.com/monarch-ai-cloud/30min', '_blank')}
+                  className="bg-black text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors duration-300 inline-flex items-center space-x-2"
+                >
+                  <span>Start Your Automation Journey</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
         </AnimatedSection>
@@ -1227,18 +1356,20 @@ export default function Home() {
                 </p>
                 
                 <div className="space-y-4">
-                  {/* Method 1: Popup Typeform (Recommended) */}
+                  {/* Method 1: Modal Typeform */}
                   <button 
                     onClick={openTypeform}
+                    type="button"
                     className="w-full bg-black text-white py-4 rounded-xl font-bold text-lg hover:bg-gray-800 transition-all duration-300 flex items-center justify-center space-x-2"
                   >
                     <span>📝 Fill Out Quick Form</span>
                     <ArrowRight className="w-5 h-5" />
                   </button>
                   
-                  {/* Method 3: Direct Redirect */}
+                  {/* Method 2: Direct Redirect */}
                   <button 
                     onClick={redirectToTypeform}
+                    type="button"
                     className="w-full border border-gray-300 text-gray-700 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center space-x-2"
                   >
                     <span>🔗 Open in New Tab</span>
@@ -1327,11 +1458,11 @@ export default function Home() {
         <div className="fixed bottom-6 right-6 z-50">
           <button 
             onClick={openTypeformPopup}
-            className="bg-black text-white px-6 py-4 rounded-full font-bold shadow-2xl hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-1 flex items-center space-x-2"
+            className="bg-black text-white px-6 py-4 rounded-full font-bold shadow-2xl hover:bg-gray-800 transition-all duration-500 ease-out transform hover:-translate-y-1 flex items-center space-x-2"
           >
             <span className="hidden sm:inline">Quick Form</span>
             <span className="sm:hidden">📝</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 transition-transform duration-400 ease-out" />
           </button>
         </div>
       </div>
