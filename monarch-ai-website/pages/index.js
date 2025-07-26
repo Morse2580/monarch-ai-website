@@ -34,13 +34,28 @@ export default function Home() {
       meta.setAttribute('content', content);
     };
 
+    // Add or update favicon
+    const updateFavicon = () => {
+      let favicon = document.querySelector('link[rel="icon"]');
+      if (!favicon) {
+        favicon = document.createElement('link');
+        favicon.setAttribute('rel', 'icon');
+        document.head.appendChild(favicon);
+      }
+      favicon.setAttribute('href', '/favicon.svg');
+      favicon.setAttribute('type', 'image/svg+xml');
+    };
+
     updateMetaTag('description', 'Transform your business with tailored AI and process automation solutions. Replacing operational drag with streamlined workflows that give you back your time.');
     updateMetaTag('keywords', 'AI automation, business automation, workflow optimization, process automation, Belgium, Brussels');
     updateMetaTag('author', 'Moses Njau');
+    updateMetaTag('viewport', 'width=device-width, initial-scale=1');
     updateMetaTag('og:title', 'Monarch AI - Intelligent Systems for Growth', true);
     updateMetaTag('og:description', 'Transform your business with tailored AI and process automation solutions.', true);
     updateMetaTag('og:type', 'website', true);
     updateMetaTag('og:url', 'https://monarch-ai.com', true);
+    
+    updateFavicon();
   }, []);
 
   useEffect(() => {
