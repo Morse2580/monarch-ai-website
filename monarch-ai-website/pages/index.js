@@ -752,7 +752,7 @@ export default function Home() {
               
               {/* Desktop Navigation */}
               <div className="hidden md:flex items-center space-x-8">
-                <a href="#services" className="text-gray-700 hover:text-black transition-colors font-medium">Services</a>
+                <a href="/services" className="text-gray-700 hover:text-black transition-colors font-medium">Services</a>
                 <a href="#process" className="text-gray-700 hover:text-black transition-colors font-medium">Process</a>
                 <a href="#about" className="text-gray-700 hover:text-black transition-colors font-medium">About</a>
                 <a href="#contact" className="text-gray-700 hover:text-black transition-colors font-medium">Contact</a>
@@ -778,7 +778,7 @@ export default function Home() {
             {mobileMenuOpen && (
               <div className="md:hidden mt-4 pb-4 border-t border-gray-100">
                 <div className="flex flex-col space-y-4 mt-4">
-                  <a href="#services" className="text-gray-700 font-medium">Services</a>
+                  <a href="/services" className="text-gray-700 font-medium">Services</a>
                   <a href="#process" className="text-gray-700 font-medium">Process</a>
                   <a href="#about" className="text-gray-700 font-medium">About</a>
                   <a href="#contact" className="text-gray-700 font-medium">Contact</a>
@@ -1501,10 +1501,10 @@ export default function Home() {
               <div>
                 <h4 className="font-bold text-white mb-4">Services</h4>
                 <div className="space-y-2 text-gray-400">
-                  <div><a href="#services" className="hover:text-white transition-colors">Workflow Automation</a></div>
-                  <div><a href="#services" className="hover:text-white transition-colors">App Integration</a></div>
-                  <div><a href="#services" className="hover:text-white transition-colors">Custom AI Solutions</a></div>
-                  <div><a href="#services" className="hover:text-white transition-colors">Process Optimization</a></div>
+                                  <div><a href="/services" className="hover:text-white transition-colors">Workflow Automation</a></div>
+                <div><a href="/services" className="hover:text-white transition-colors">App Integration</a></div>
+                <div><a href="/services" className="hover:text-white transition-colors">Custom AI Solutions</a></div>
+                <div><a href="/services" className="hover:text-white transition-colors">Process Optimization</a></div>
                 </div>
               </div>
               
